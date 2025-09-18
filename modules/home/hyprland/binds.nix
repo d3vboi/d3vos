@@ -20,8 +20,9 @@ in
       "$modifier,Y,exec,kitty -e yazi"                  # Yazi (Terminal file explorer)
       "$modifier,E,exec,emopicker9000"                  # Emoji picker
       "$modifier,S,exec,screenshootin"                  # Screenshot
-      "$modifier,D,exec,discord"                        # Discord
-      "$modifier,O,exec,obs"                            # OBS
+      #"$modifier,D,exec,discord"                        # Discord
+      #"$modifier,O,exec,obs"                            # OBS
+      "$modifier,Escape,exec,hyprlock"                  # Hyprlock (Lock screen) 
       "$modifier,C,exec,hyprpicker -a"                  # Hyprpicker (Colour picker)
       "$modifier,G,exec,gimp"                           # Gimp
       "$modifier control,return,exec,pypr toggle term"  # Pypr (Popup terminal)

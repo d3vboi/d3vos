@@ -53,9 +53,11 @@
       sv = "sudo nvim";
       v = "nvim";
       c = "clear";
+      copy = "wl-copy";
+      paste = "wl-paste";
       fr = "nh os switch --hostname ${profile}";
       fu = "nh os switch --hostname ${profile} --update";
-      zu = "sh <(curl -L https://gitlab.com/D3vboi/d3vos/-/releases/latest/download/install-d3vos.sh)";
+      #zu = "sh <(curl -L https://github.com/d3vboi/d3vos/-/releases/latest/download/install-d3vos.sh)";
       ncg = "nix-collect-garbage --delete-old && sudo nix-collect-garbage -d && sudo /run/current-system/bin/switch-to-configuration boot";
       cat = "bat";
       man = "batman";

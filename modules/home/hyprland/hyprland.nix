@@ -78,8 +78,8 @@ in
       general = {
         "$modifier" = "SUPER";
         layout = "dwindle";
-        gaps_in = 6;
-        gaps_out = 8;
+        gaps_in = 1;
+        gaps_out = 2;
         border_size = 2;
         resize_on_border = true;
         "col.active_border" = "rgb(${config.lib.stylix.colors.base08}) rgb(${config.lib.stylix.colors.base0C}) 45deg";
@@ -111,7 +111,7 @@ in
       };
 
       decoration = {
-        rounding = 10;
+        rounding = 7;
         blur = {
           enabled = true;
           size = 5;

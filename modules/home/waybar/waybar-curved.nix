@@ -19,19 +19,19 @@ with lib; {
         position = "top";
         modules-center = [ "hyprland/workspaces" ];
         modules-left = [
-          "custom/startmenu"
-          "hyprland/window"
+          #"custom/startmenu"
           "pulseaudio"
           "cpu"
           "memory"
-          "idle_inhibitor"
+          "hyprland/window"
         ];
         modules-right = [
           "custom/hyprbindings"
           "custom/notification"
-          "custom/exit"
+          "idle_inhibitor"
           "battery"
           "tray"
+          "custom/exit"
           "clock"
         ];
 
@@ -230,7 +230,7 @@ with lib; {
         tooltip label {
           color: #${config.lib.stylix.colors.base08};
         }
-        #window, #pulseaudio, #cpu, #memory, #idle_inhibitor {
+        #window, #pulseaudio, #cpu, #memory {
           font-weight: bold;
           margin: 4px 0px;
           margin-left: 7px;
@@ -240,7 +240,7 @@ with lib; {
           border-radius: 24px 10px 24px 10px;
         }
         #custom-hyprbindings, #network, #battery,
-        #custom-notification, #tray, #custom-exit {
+        #custom-notification, #tray, #custom-exit, #idle_inhibitor {
           font-weight: bold;
           background: #${config.lib.stylix.colors.base0F};
           color: #${config.lib.stylix.colors.base00};

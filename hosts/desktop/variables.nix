@@ -10,7 +10,7 @@
   displayManager = "sddm";
 
   # Emable/disable bundled applications
-  tmuxEnable = false;
+  tmuxEnable = true;
   alacrittyEnable = false;
   weztermEnable = false;
   ghosttyEnable = false;
@@ -27,6 +27,7 @@
   # You can configure multiple monitors.
   # Inside the quotes, create a new line for each monitor.
   extraMonitorSettings = "
+    
     ";
 
   # monitor=HDMI-A-1,1920x1080@165,0x0,1
