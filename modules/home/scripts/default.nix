@@ -25,5 +25,6 @@
         ".config/mimeapps.list.backup"
       ];
     })
+    (import ./wb-mediaplayer.nix { inherit pkgs; })
   ];
 }

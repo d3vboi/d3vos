@@ -13,7 +13,7 @@
     #export VISUAL="nvim"
  
     #alias c="clear"
-   
+    alias lg=lazygit
 
   '';
 }
