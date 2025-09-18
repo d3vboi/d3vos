@@ -26,7 +26,8 @@ with lib; {
           "hyprland/window"
         ];
         modules-right = [
-          "custom/hyprbindings"
+          #"custom/hyprbindings"
+          "custom/mediaplayer"
           "custom/notification"
           "idle_inhibitor"
           "battery"
@@ -171,6 +172,14 @@ with lib; {
           ];
           on-click = "";
           tooltip = false;
+        };
+        "custom/mediaplayer" = {
+          exec = "wb-mediaplayer --player spotify";
+          format = "{}  ";
+          return-type = "json";
+          on-click = "playerctl play-pause";
+          on-scroll-up = "playerctl next";
+          on-scroll-down = "playerctl previous";
         };
       }
     ];

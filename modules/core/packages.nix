@@ -49,6 +49,7 @@
     dysk # Disk space util nice formattting
     eza # Beautiful ls Replacement
     ffmpeg # Terminal Video / Audio Editing
+    file # Linux "file" command
     file-roller # Archive Manager
     firefox # Firefox browser
     gedit # Simple Graphical Text Editor
@@ -60,6 +61,7 @@
     hyprpicker # Color Picker
     eog # For Image Viewing
     inxi # CLI System Information Tool
+    jq # JSON parser
     killall # For Killing All Instances Of Programs
     libnotify # For Notifications
     lm_sensors # Used For Getting Hardware Temps
