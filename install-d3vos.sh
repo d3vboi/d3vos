@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-
-######################################
-# Install script for d3vos  
-# Author:  Don Williams 
-# Date: June 27, 2005 
-#######################################
-
 # Define colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -187,19 +180,12 @@ if [ -d "d3vos" ]; then
   echo -e "${RED}║                                                                       ║${NC}"
   echo -e "${RED}║  This installer will COMPLETELY REPLACE your existing configuration!  ║${NC}"
   echo -e "${RED}║  All customizations, packages, and settings will be LOST!            ║${NC}"
-  echo -e "${RED}║                                                                       ║${NC}"
-  echo -e "${RED}║  If you want to UPGRADE from D3vOS 2.3 to 2.4:                    ║${NC}"
-  echo -e "${RED}║  1. Press Ctrl+C to cancel this installer                            ║${NC}"
-  echo -e "${RED}║  2. Run: cd ~/d3vos && ./upgrade-2.3-to-2.4.sh                     ║${NC}"
-  echo -e "${RED}║                                                                       ║${NC}"
-  echo -e "${RED}║  The upgrade script preserves ALL your customizations!               ║${NC}"
   echo -e "${RED}╚═══════════════════════════════════════════════════════════════════════╝${NC}"
   echo ""
   echo -e "${YELLOW}If you REALLY want to do a fresh installation (losing all customizations):${NC}"
   read -p "Type 'REPLACE' to continue with fresh install or Ctrl+C to cancel: " confirmation
   if [ "$confirmation" != "REPLACE" ]; then
-    echo -e "${GREEN}Installation cancelled. Use the upgrade script instead!${NC}"
-    echo -e "${GREEN}Run: cd ~/d3vos && ./upgrade-2.3-to-2.4.sh${NC}"
+    echo -e "${GREEN}Installation cancelled.${NC}"
     exit 0
   fi
   echo -e "${GREEN}d3vos exists, backing up to .config/d3vos-backups folder.${NC}"
@@ -219,7 +205,7 @@ else
 fi
 
 print_header "Cloning D3vOS Repository"
-git clone https://gitlab.com/d3vboi/d3vos.git --depth=1  ~/d3vos
+git clone https://github.com/d3vboi/d3vos.git --depth=1  ~/d3vos
 cd ~/d3vos || exit 1
 
 print_header "Git Configuration"
@@ -244,20 +230,21 @@ echo -e "${GREEN}✓ Git email: $gitEmail${NC}"
 
 print_header "Timezone Configuration"
 echo "🌎 Common timezones:"
+echo "  • Europe: Europe/Copenhagen, Europe/London, Europe/Berlin, Europe/Paris"
 echo "  • US: America/New_York, America/Chicago, America/Denver, America/Los_Angeles"
-echo "  • Europe: Europe/London, Europe/Berlin, Europe/Paris, Europe/Rome"
 echo "  • Asia: Asia/Tokyo, Asia/Shanghai, Asia/Seoul, Asia/Kolkata"
 echo "  • Australia: Australia/Sydney, Australia/Melbourne"
 echo "  • UTC (Universal): UTC"
-read -rp "Enter your timezone [ America/New_York ]: " timezone
+read -rp "Enter your timezone [ Europe/Copenhagen ]: " timezone
 if [ -z "$timezone" ]; then
-  timezone="America/New_York"
+  timezone="Europe/Copenhagen"
 fi
 echo -e "${GREEN}✓ Timezone set to: $timezone${NC}"
 
 print_header "Keyboard Layout Configuration"
 echo "🌍 Common keyboard layouts:"
-echo "  • us (US English) - default"
+echo "  • dk (Danish) - default"
+echo "  • us (US English)"
 echo "  • us-intl (US International)"
 echo "  • uk (UK English)"
 echo "  • de (German)"
@@ -266,19 +253,19 @@ echo "  • es (Spanish)"
 echo "  • it (Italian)"
 echo "  • ru (Russian)"
 echo "  • dvorak (Dvorak)"
-read -rp "Enter your keyboard layout: [ us ] " keyboardLayout
+read -rp "Enter your keyboard layout: [ dk ] " keyboardLayout
 if [ -z "$keyboardLayout" ]; then
-  keyboardLayout="us"
+  keyboardLayout="dk"
 fi
 echo -e "${GREEN}✓ Keyboard layout set to: $keyboardLayout${NC}"
 
 print_header "Console Keymap Configuration"
 echo "⌨️  Console keymap (usually matches your keyboard layout):"
-echo "  Most common: us, uk, de, fr, es, it, ru"
+echo "  Most common: dk, us, uk, de, fr, es, it, ru"
 # Smart default: use keyboard layout as console keymap default if it's a common one
 defaultConsoleKeyMap="$keyboardLayout"
-if [[ ! "$keyboardLayout" =~ ^(us|uk|de|fr|es|it|ru|us-intl|dvorak)$ ]]; then
-  defaultConsoleKeyMap="us"
+if [[ ! "$keyboardLayout" =~ ^(dk|us|uk|de|fr|es|it|ru|us-intl|dvorak)$ ]]; then
+  defaultConsoleKeyMap="dk"
 fi
 read -rp "Enter your console keymap: [ $defaultConsoleKeyMap ] " consoleKeyMap
 if [ -z "$consoleKeyMap" ]; then

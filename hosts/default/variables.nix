@@ -10,7 +10,7 @@
   displayManager = "sddm";
 
   # Emable/disable bundled applications
-  tmuxEnable = false;
+  tmuxEnable = true;
   alacrittyEnable = false;
   weztermEnable = false;
   ghosttyEnable = false;
@@ -85,7 +85,6 @@
   #waybarChoice = ../../modules/home/waybar/waybar-ddubs.nix;
   #waybarChoice = ../../modules/home/waybar/waybar-ddubs-2.nix;
   #waybarChoice = ../../modules/home/waybar/waybar-simple.nix;
-  # Throwback to D3vOS v1.0
   #waybarChoice = ../../modules/home/waybar/waybar-jerry.nix;
   # Very colorful and bright colors
   #waybarChoice = ../../modules/home/waybar/waybar-nekodyke.nix;

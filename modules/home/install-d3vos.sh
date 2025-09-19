@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-
-######################################
-# Install script for d3vos  
-# Author:  Don Williams 
-# Date: June 27, 2005 
-#######################################
-
 # Define colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -33,7 +26,7 @@ print_error() {
 # Function to print a success banner
 print_success_banner() {
   echo -e "${GREEN}╔═══════════════════════════════════════════════════════════════════════╗${NC}"
-  echo -e "${GREEN}║                 d3vos Installation Successful!                      ║${NC}"
+  echo -e "${GREEN}║                 D3vOS Installation Successful!                      ║${NC}"
   echo -e "${GREEN}║                                                                       ║${NC}"
   echo -e "${GREEN}║   Please reboot your system for changes to take full effect.          ║${NC}"
   echo -e "${GREEN}║                                                                       ║${NC}"
@@ -43,7 +36,7 @@ print_success_banner() {
 # Function to print a failure banner
 print_failure_banner() {
   echo -e "${RED}╔═══════════════════════════════════════════════════════════════════════╗${NC}"
-  echo -e "${RED}║                 d3vos Installation Failed!                          ║${NC}"
+  echo -e "${RED}║                 D3vOS Installation Failed!                          ║${NC}"
   echo -e "${RED}║                                                                       ║${NC}"
   echo -e "${RED}║   Please review the log file for details:                             ║${NC}"
   echo -e "${RED}║   ${LOG_FILE}                                                        ║${NC}"
@@ -87,10 +80,29 @@ cd "$HOME" || exit 1
 echo -e "${GREEN}Current directory: $(pwd)${NC}"
 
 print_header "Hostname Configuration"
-read -rp "Enter Your New Hostname: [ default ] " hostName
+
+# Critical warning about using "default" as hostname
+echo -e "${RED}⚠️  IMPORTANT WARNING: Do NOT use 'default' as your hostname!${NC}"
+echo -e "${RED}   The 'default' hostname is a template and will be overwritten during updates.${NC}"
+echo -e "${RED}   This will cause you to lose your configuration!${NC}"
+echo ""
+echo -e "💡 Suggested hostnames: my-desktop, gaming-rig, workstation, nixos-laptop"
+read -rp "Enter Your New Hostname: [ my-desktop ] " hostName
 if [ -z "$hostName" ]; then
-  hostName="default"
+  hostName="my-desktop"
 fi
+
+# Double-check if user accidentally entered "default"
+if [ "$hostName" = "default" ]; then
+  echo -e "${RED}❌ Error: You cannot use 'default' as hostname. Please choose a different name.${NC}"
+  read -rp "Enter a different hostname: " hostName
+  if [ -z "$hostName" ] || [ "$hostName" = "default" ]; then
+    echo -e "${RED}Setting hostname to 'my-desktop' to prevent configuration loss.${NC}"
+    hostName="my-desktop"
+  fi
+fi
+
+echo -e "${GREEN}✓ Hostname set to: $hostName${NC}"
 
 print_header "GPU Profile Detection"
 
@@ -143,67 +155,163 @@ fi
 # If profile is still empty (either not detected or not confirmed), prompt manually
 if [ -z "$profile" ]; then
   echo -e "${RED}Automatic GPU detection failed or no specific profile found.${NC}"
-  read -rp "Enter Your Hardware Profile (GPU)\nOptions:\n[ amd ]\nnvidia\nnvidia-laptop\nintel\nvm\nPlease type out your choice: " profile
+  read -rp "Enter Your Hardware Profile (GPU)
+Options:
+[ amd ]
+nvidia
+nvidia-laptop
+intel
+vm
+Please type out your choice: " profile
   if [ -z "$profile" ]; then
     profile="amd"
   fi
   echo -e "${GREEN}Selected GPU profile: $profile${NC}"
 fi
 
-print_header "Backup Existing d3vos (if any)"
+print_header "⚠️  CRITICAL WARNING - Existing D3vOS Detected"
 
 backupname=$(date +"%Y-%m-%d-%H-%M-%S")
 if [ -d "d3vos" ]; then
+  echo -e "${RED}╔═══════════════════════════════════════════════════════════════════════╗${NC}"
+  echo -e "${RED}║                    ⚠️  IMPORTANT WARNING ⚠️                           ║${NC}"
+  echo -e "${RED}║                                                                       ║${NC}"
+  echo -e "${RED}║  An existing D3vOS installation was detected at ~/d3vos           ║${NC}"
+  echo -e "${RED}║                                                                       ║${NC}"
+  echo -e "${RED}║  This installer will COMPLETELY REPLACE your existing configuration!  ║${NC}"
+  echo -e "${RED}║  All customizations, packages, and settings will be LOST!            ║${NC}"
+  echo -e "${RED}╚═══════════════════════════════════════════════════════════════════════╝${NC}"
+  echo ""
+  echo -e "${YELLOW}If you REALLY want to do a fresh installation (losing all customizations):${NC}"
+  read -p "Type 'REPLACE' to continue with fresh install or Ctrl+C to cancel: " confirmation
+  if [ "$confirmation" != "REPLACE" ]; then
+    echo -e "${GREEN}Installation cancelled.${NC}"
+    exit 0
+  fi
   echo -e "${GREEN}d3vos exists, backing up to .config/d3vos-backups folder.${NC}"
   if [ -d ".config/d3vos-backups" ]; then
-    echo -e "${GREEN}Moving current version of d3vos to backups folder.${NC}"
+    echo -e "${GREEN}Moving current version of D3vOS to backups folder.${NC}"
     mv "$HOME"/d3vos .config/d3vos-backups/"$backupname"
     sleep 1
   else
-    echo -e "${GREEN}Creating the backups folder & moving d3vos to it.${NC}"
+    echo -e "${GREEN}Creating the backups folder & moving D3vOS to it.${NC}"
     mkdir -p .config/d3vos-backups
     mv "$HOME"/d3vos .config/d3vos-backups/"$backupname"
     sleep 1
   fi
 else
-  echo -e "${GREEN}Thank you for choosing d3vos.${NC}"
+  echo -e "${GREEN}Thank you for choosing D3vOS.${NC}"
   echo -e "${GREEN}I hope you find your time here enjoyable!${NC}"
 fi
 
-print_header "Cloning d3vos Repository"
-git clone https://gitlab.com/dwilliam62/d3vos.git --depth=1  ~/d3vos
+print_header "Cloning D3vOS Repository"
+git clone https://github.com/d3vboi/d3vos.git --depth=1  ~/d3vos
 cd ~/d3vos || exit 1
+
+print_header "Git Configuration"
+echo "👤 Setting up git configuration for version control:"
+echo "  This is needed for system updates and configuration management."
+echo ""
+installusername=$(echo $USER)
+echo -e "Current username: ${GREEN}$installusername${NC}"
+read -rp "Enter your full name for git commits [ $installusername ]: " gitUsername
+if [ -z "$gitUsername" ]; then
+  gitUsername="$installusername"
+fi
+
+echo "📧 Examples: john@example.com, jane.doe@company.org"
+read -rp "Enter your email address for git commits [ $installusername@example.com ]: " gitEmail
+if [ -z "$gitEmail" ]; then
+  gitEmail="$installusername@example.com"
+fi
+
+echo -e "${GREEN}✓ Git name: $gitUsername${NC}"
+echo -e "${GREEN}✓ Git email: $gitEmail${NC}"
+
+print_header "Timezone Configuration"
+echo "🌎 Common timezones:"
+echo "  • Europe: Europe/Copenhagen, Europe/London, Europe/Berlin, Europe/Paris"
+echo "  • US: America/New_York, America/Chicago, America/Denver, America/Los_Angeles"
+echo "  • Asia: Asia/Tokyo, Asia/Shanghai, Asia/Seoul, Asia/Kolkata"
+echo "  • Australia: Australia/Sydney, Australia/Melbourne"
+echo "  • UTC (Universal): UTC"
+read -rp "Enter your timezone [ Europe/Copenhagen ]: " timezone
+if [ -z "$timezone" ]; then
+  timezone="Europe/Copenhagen"
+fi
+echo -e "${GREEN}✓ Timezone set to: $timezone${NC}"
+
+print_header "Keyboard Layout Configuration"
+echo "🌍 Common keyboard layouts:"
+echo "  • dk (Danish) - default"
+echo "  • us (US English)"
+echo "  • us-intl (US International)"
+echo "  • uk (UK English)"
+echo "  • de (German)"
+echo "  • fr (French)"
+echo "  • es (Spanish)"
+echo "  • it (Italian)"
+echo "  • ru (Russian)"
+echo "  • dvorak (Dvorak)"
+read -rp "Enter your keyboard layout: [ dk ] " keyboardLayout
+if [ -z "$keyboardLayout" ]; then
+  keyboardLayout="dk"
+fi
+echo -e "${GREEN}✓ Keyboard layout set to: $keyboardLayout${NC}"
+
+print_header "Console Keymap Configuration"
+echo "⌨️  Console keymap (usually matches your keyboard layout):"
+echo "  Most common: dk, us, uk, de, fr, es, it, ru"
+# Smart default: use keyboard layout as console keymap default if it's a common one
+defaultConsoleKeyMap="$keyboardLayout"
+if [[ ! "$keyboardLayout" =~ ^(dk|us|uk|de|fr|es|it|ru|us-intl|dvorak)$ ]]; then
+  defaultConsoleKeyMap="dk"
+fi
+read -rp "Enter your console keymap: [ $defaultConsoleKeyMap ] " consoleKeyMap
+if [ -z "$consoleKeyMap" ]; then
+  consoleKeyMap="$defaultConsoleKeyMap"
+fi
+echo -e "${GREEN}✓ Console keymap set to: $consoleKeyMap${NC}"
 
 print_header "Configuring Host and Profile"
 mkdir -p hosts/"$hostName"
 cp hosts/default/*.nix hosts/"$hostName"
 
-installusername=$(echo $USER)
-git config --global user.name "$installusername"
-git config --global user.email "$installusername@gmail.com"
+git config --global user.name "$gitUsername"
+git config --global user.email "$gitEmail"
 git add .
 git config --global --unset-all user.name
 git config --global --unset-all user.email
 
-sed -i "/^[[:space:]]*host[[:space:]]*=[[:space:]]*\"/ s/\"[^\"]*\"/\"$hostName\"/" ./flake.nix
-sed -i "/^[[:space:]]*profile[[:space:]]*=[[:space:]]*\"/ s/\"[^\"]*\"/\"$profile\"/" ./flake.nix
+echo "Updating configuration files with working awk commands..."
 
-print_header "Keyboard Layout Configuration"
-read -rp "Enter your keyboard layout: [ us ] " keyboardLayout
-if [ -z "$keyboardLayout" ]; then
-  keyboardLayout="us"
-fi
-sed -i "/^[[:space:]]*keyboardLayout[[:space:]]*=[[:space:]]*\"/ s/\"[^\"]*\"/\"$keyboardLayout\"/" ./hosts/$hostName/variables.nix
+# Update flake.nix (simple pattern replacements that work)
+# Create backup first, before any changes
+cp ./flake.nix ./flake.nix.bak
+# Use sed for hostname (more reliable)
+sed -i "/^[[:space:]]*host[[:space:]]*=[[:space:]]*\"/s/\"[^\"]*\"/\"$hostName\"/" ./flake.nix.bak
+awk -v newprof="$profile" '/^    profile = / { gsub(/"[^"]*"/, "\"" newprof "\""); } { print }' ./flake.nix.bak > ./flake.nix
+cp ./flake.nix ./flake.nix.bak
+awk -v newuser="$installusername" '/^      username = / { gsub(/"[^"]*"/, "\"" newuser "\""); } { print }' ./flake.nix.bak > ./flake.nix
+rm ./flake.nix.bak
 
-print_header "Console Keymap Configuration"
-read -rp "Enter your console keymap: [ us ] " consoleKeyMap
-if [ -z "$consoleKeyMap" ]; then
-  consoleKeyMap="us"
-fi
-sed -i "/^[[:space:]]*consoleKeyMap[[:space:]]*=[[:space:]]*\"/ s/\"[^\"]*\"/\"$consoleKeyMap\"/" ./hosts/$hostName/variables.nix
+# Update timezone in system.nix  
+cp ./modules/core/system.nix ./modules/core/system.nix.bak
+awk -v newtz="$timezone" '/^  time\.timeZone = / { gsub(/"[^"]*"/, "\"" newtz "\""); } { print }' ./modules/core/system.nix.bak > ./modules/core/system.nix
+rm ./modules/core/system.nix.bak
 
-print_header "Username Configuration"
-sed -i "/^[[:space:]]*username[[:space:]]*=[[:space:]]*\"/ s/\"[^\"]*\"/\"$installusername\"/" ./flake.nix
+# Update variables in host file
+cp ./hosts/$hostName/variables.nix ./hosts/$hostName/variables.nix.bak
+awk -v newuser="$gitUsername" '/^  gitUsername = / { gsub(/"[^"]*"/, "\"" newuser "\""); } { print }' ./hosts/$hostName/variables.nix.bak > ./hosts/$hostName/variables.nix
+cp ./hosts/$hostName/variables.nix ./hosts/$hostName/variables.nix.bak
+awk -v newemail="$gitEmail" '/^  gitEmail = / { gsub(/"[^"]*"/, "\"" newemail "\""); } { print }' ./hosts/$hostName/variables.nix.bak > ./hosts/$hostName/variables.nix
+cp ./hosts/$hostName/variables.nix ./hosts/$hostName/variables.nix.bak
+awk -v newkb="$keyboardLayout" '/^  keyboardLayout = / { gsub(/"[^"]*"/, "\"" newkb "\""); } { print }' ./hosts/$hostName/variables.nix.bak > ./hosts/$hostName/variables.nix
+cp ./hosts/$hostName/variables.nix ./hosts/$hostName/variables.nix.bak
+awk -v newckm="$consoleKeyMap" '/^  consoleKeyMap = / { gsub(/"[^"]*"/, "\"" newckm "\""); } { print }' ./hosts/$hostName/variables.nix.bak > ./hosts/$hostName/variables.nix
+rm ./hosts/$hostName/variables.nix.bak
+
+echo "Configuration files updated successfully!"
 
 print_header "Generating Hardware Configuration -- Ignore ERROR: cannot access /bin"
 sudo nixos-generate-config --show-hardware-config > ./hosts/$hostName/hardware.nix
