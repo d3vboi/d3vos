@@ -174,8 +174,8 @@ with lib; {
           tooltip = false;
         };
         "custom/mediaplayer" = {
-          exec = "wb-mediaplayer --player spotify";
-          format = "{}  ";
+          exec = "wb-mediaplayer";
+          format = "{text}  ";
           return-type = "json";
           on-click = "playerctl play-pause";
           on-scroll-up = "playerctl next";
@@ -248,7 +248,7 @@ with lib; {
           color: #${config.lib.stylix.colors.base00};
           border-radius: 24px 10px 24px 10px;
         }
-        #custom-hyprbindings, #network, #battery,
+        #custom-hyprbindings, #network, #battery, #custom-mediaplayer,
         #custom-notification, #tray, #custom-exit, #idle_inhibitor {
           font-weight: bold;
           background: #${config.lib.stylix.colors.base0F};
