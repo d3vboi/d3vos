@@ -113,14 +113,14 @@
       };
 
       lsp = {
-        formatOnSave = true;
-        lspkind.enable = false;
-        lightbulb.enable = false;
-        lspsaga.enable = false;
-        trouble.enable = true;
-        lspSignature.enable = true;
-        otter-nvim.enable = false;
-        nvim-docs-view.enable = false;
+        formatOnSave = true; #true
+        lspkind.enable = true; #false
+        lightbulb.enable = true; #false
+        lspsaga.enable = true; #false
+        trouble.enable = true; #true
+        lspSignature.enable = true; #true
+        otter-nvim.enable = true; #false
+        nvim-docs-view.enable = true; #false
       };
 
       languages = {
@@ -147,7 +147,7 @@
         typst.enable = true;
         rust = {
           enable = true;
-          crates.enable = true;
+          crates.enable = false;
         };
       };
       visuals = {

@@ -58,7 +58,7 @@ with lib; {
           max-length = 22;
           separate-outputs = false;
           rewrite = {
-            "" = " 🙈 No Windows? ";
+            "" = " No Windows ";
           };
         };
         "memory" = {
