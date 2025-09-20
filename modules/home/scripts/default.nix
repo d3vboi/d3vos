@@ -26,5 +26,6 @@
       ];
     })
     (import ./wb-mediaplayer.nix { inherit pkgs; })
+    (import ./remind.nix { inherit pkgs; })
   ];
 }
