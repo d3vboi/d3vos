@@ -260,6 +260,7 @@ with lib; {
         }
         #clock {
           font-weight: bold;
+          font-size: 16;
           color: #0D0E15;
           background: linear-gradient(90deg, #${config.lib.stylix.colors.base0E}, #${config.lib.stylix.colors.base0C});
           margin: 0px;
