@@ -31,8 +31,8 @@
     }@inputs:
     let
       system = "x86_64-linux";
-    host = "desktop";
-    profile = "amd";
+    host = "l4ptop";
+    profile = "nvidia";
       username = "d3vboi";
 
       # Deduplicate nixosConfigurations while preserving the top-level 'profile'
